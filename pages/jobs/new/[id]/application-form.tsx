@@ -1,8 +1,8 @@
 import { ApplicationFormsCreateRequestParams } from "@api-contracts/application-forms/create";
-import { DotsVerticalIcon } from "@heroicons/react/outline";
+import { DotsVerticalIcon, TrashIcon } from "@heroicons/react/outline";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { BaseSyntheticEvent } from "react";
+import { BaseSyntheticEvent, useState } from "react";
 
 import { asStringOrUndefined } from "@helpers/type-safety";
 
@@ -11,6 +11,18 @@ import Shell from "@components/Shell";
 export default function JobsNew() {
   const router = useRouter();
   const jobUid = asStringOrUndefined(router.query.id);
+
+  const [fields, setFields] = useState([{ id: Math.floor(Math.random() * 1000), input: "" }]);
+
+  const handleSetFields = () => {
+    setFields([...fields, { id: Math.floor(Math.random() * 1000), input: "" }]);
+  };
+
+  const handleDeleteField = (index: number) => {
+    const field = [...fields];
+    field.splice(index, 1);
+    setFields(field);
+  };
 
   async function submit(e: BaseSyntheticEvent) {
     e.preventDefault();
@@ -65,38 +77,51 @@ export default function JobsNew() {
                       <p className="text-md">Email</p>
                     </div>
                   </div>
-                  <div className="flex items-center">
-                    <DotsVerticalIcon className="w-5 h-5 text-gray-400 cursor-move" aria-hidden="true" />
-                    <div className="flex-auto p-2 bg-gray-100 rounded">
-                      <p className="text-sm font-semibold text-md">Type</p>
-                      <select
-                        defaultValue="short_text"
-                        className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="short_text">Short text</option>
-                        <option value="long_text">Long text</option>
-                        <option value="checkbox">Yes/No</option>
-                        <option value="select">Select one</option>
-                        <option value="multi_select">Select multiple</option>
-                      </select>
-                      <p className="text-sm font-semibold text-md">Type</p>
-                      <input
-                        id="label"
-                        name="label"
-                        type="text"
-                        required
-                        className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        placeholder="e. g. LinkedIn URL"
-                      />
+
+                  {fields.map((field, index) => (
+                    <div className="flex items-center" key={index}>
+                      <DotsVerticalIcon className="w-5 h-5 text-gray-400 cursor-move" aria-hidden="true" />
+                      <div className="flex-auto p-2 bg-gray-100 rounded">
+                        <div className="flex justify-between">
+                          <p className="text-sm font-semibold text-md">Type</p>
+                          <TrashIcon
+                            className="w-4 h-4 text-red-500 cursor-pointer"
+                            aria-hidden="true"
+                            onClick={() => handleDeleteField(index)}
+                          />
+                        </div>
+                        <select
+                          defaultValue="short_text"
+                          className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                          <option value="short_text">Short text</option>
+                          <option value="long_text">Long text</option>
+                          <option value="checkbox">Yes/No</option>
+                          <option value="select">Select one</option>
+                          <option value="multi_select">Select multiple</option>
+                        </select>
+                        <p className="text-sm font-semibold text-md">Type</p>
+                        <input
+                          id="label"
+                          name="label"
+                          type="text"
+                          required
+                          className="block w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          placeholder="e. g. LinkedIn URL"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <button
-                      type="button"
-                      onClick={submit}
-                      className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                      Add field
-                    </button>
-                  </div>
+                  ))}
+
+                  {fields.length < 4 && (
+                    <div>
+                      <button
+                        type="button"
+                        onClick={handleSetFields}
+                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Add field
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
