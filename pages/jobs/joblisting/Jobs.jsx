@@ -6,8 +6,8 @@ const Jobs = () => {
   return (
     <Shell>
       <header></header>
-      <div className="py-4 bg-white rounded-md w-full sm:px-6 md:px-0 lg:flex lg:items-center lg:justify-between">
-        <h1 className="text-2xl text-gray-500">Company Name</h1>
+      <div className="py-4 bg-white rounded-md w-full sm:px-6 md:px-5 lg:flex lg:items-center lg:justify-between">
+        <h1 className="text-2xl text-gray-500 ">Company Name</h1>
         <span className="sm:ml-3">
           <button
             type="button"
