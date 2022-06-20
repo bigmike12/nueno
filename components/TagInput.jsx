@@ -17,7 +17,6 @@ const TagInput = () => {
   return (
     <div className="flex items-center flex-wrap gap-1 w-80 p-1  border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
       {tag.map((tag, index) => (
-        // eslint-disable-next-line react/jsx-key
         <div key={index} className="bg-gray-200 inline-block py-1 px-2 rounded-full">
           <span>{tag}</span>
           <span
